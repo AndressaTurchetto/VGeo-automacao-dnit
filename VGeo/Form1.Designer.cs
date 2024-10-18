@@ -39,11 +39,9 @@
             lbLog = new Label();
             tbKmEnd = new TextBox();
             tbKmBegin = new TextBox();
-            tbDiretorio = new TextBox();
             btFile = new Button();
             lbkmBegin = new Label();
             lbKMEnd = new Label();
-            label1 = new Label();
             progressBar = new ProgressBar();
             tbStatus = new TextBox();
             pictureBox1 = new PictureBox();
@@ -64,7 +62,7 @@
             // 
             lbBR.FormattingEnabled = true;
             lbBR.ItemHeight = 15;
-            lbBR.Location = new Point(104, 18);
+            lbBR.Location = new Point(105, 24);
             lbBR.Margin = new Padding(3, 2, 3, 2);
             lbBR.Name = "lbBR";
             lbBR.SelectionMode = SelectionMode.None;
@@ -75,7 +73,7 @@
             // 
             lbUF.FormattingEnabled = true;
             lbUF.ItemHeight = 15;
-            lbUF.Location = new Point(12, 20);
+            lbUF.Location = new Point(13, 26);
             lbUF.Margin = new Padding(3, 2, 3, 2);
             lbUF.Name = "lbUF";
             lbUF.Size = new Size(84, 289);
@@ -89,7 +87,8 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 3);
+            label2.ForeColor = SystemColors.ControlDarkDark;
+            label2.Location = new Point(13, 9);
             label2.Name = "label2";
             label2.Size = new Size(21, 15);
             label2.TabIndex = 18;
@@ -98,7 +97,8 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(105, 3);
+            label3.ForeColor = SystemColors.ControlDarkDark;
+            label3.Location = new Point(106, 9);
             label3.Name = "label3";
             label3.Size = new Size(21, 15);
             label3.TabIndex = 19;
@@ -107,8 +107,9 @@
             // brnPOrocesss
             // 
             brnPOrocesss.BackColor = Color.DarkBlue;
+            brnPOrocesss.Cursor = Cursors.Hand;
             brnPOrocesss.ForeColor = SystemColors.ButtonHighlight;
-            brnPOrocesss.Location = new Point(508, 29);
+            brnPOrocesss.Location = new Point(757, 467);
             brnPOrocesss.Margin = new Padding(3, 2, 3, 2);
             brnPOrocesss.Name = "brnPOrocesss";
             brnPOrocesss.Size = new Size(130, 35);
@@ -119,18 +120,19 @@
             // 
             // tbLog
             // 
-            tbLog.Location = new Point(16, 85);
+            tbLog.Location = new Point(13, 70);
             tbLog.Margin = new Padding(3, 2, 3, 2);
             tbLog.Multiline = true;
             tbLog.Name = "tbLog";
             tbLog.ScrollBars = ScrollBars.Both;
-            tbLog.Size = new Size(623, 181);
+            tbLog.Size = new Size(634, 202);
             tbLog.TabIndex = 1;
             // 
             // lbLog
             // 
             lbLog.AutoSize = true;
-            lbLog.Location = new Point(16, 68);
+            lbLog.ForeColor = SystemColors.ControlDarkDark;
+            lbLog.Location = new Point(13, 53);
             lbLog.Name = "lbLog";
             lbLog.Size = new Size(36, 15);
             lbLog.TabIndex = 2;
@@ -138,7 +140,7 @@
             // 
             // tbKmEnd
             // 
-            tbKmEnd.Location = new Point(87, 36);
+            tbKmEnd.Location = new Point(84, 27);
             tbKmEnd.Margin = new Padding(3, 2, 3, 2);
             tbKmEnd.Name = "tbKmEnd";
             tbKmEnd.Size = new Size(54, 23);
@@ -147,28 +149,19 @@
             // 
             // tbKmBegin
             // 
-            tbKmBegin.Location = new Point(16, 37);
+            tbKmBegin.Location = new Point(13, 28);
             tbKmBegin.Margin = new Padding(3, 2, 3, 2);
             tbKmBegin.Name = "tbKmBegin";
             tbKmBegin.Size = new Size(61, 23);
             tbKmBegin.TabIndex = 5;
             tbKmBegin.Text = "490";
             // 
-            // tbDiretorio
-            // 
-            tbDiretorio.Location = new Point(559, 26);
-            tbDiretorio.Margin = new Padding(3, 2, 3, 2);
-            tbDiretorio.Name = "tbDiretorio";
-            tbDiretorio.Size = new Size(138, 23);
-            tbDiretorio.TabIndex = 11;
-            tbDiretorio.Text = "C:\\Users\\ConsórcioASSES-COMPU\\OneDrive - ASSES\\Área de Trabalho";
-            tbDiretorio.Visible = false;
-            // 
             // btFile
             // 
             btFile.BackColor = Color.Black;
+            btFile.Cursor = Cursors.Hand;
             btFile.ForeColor = SystemColors.Control;
-            btFile.Location = new Point(420, 29);
+            btFile.Location = new Point(660, 467);
             btFile.Margin = new Padding(3, 2, 3, 2);
             btFile.Name = "btFile";
             btFile.Size = new Size(82, 35);
@@ -181,33 +174,26 @@
             // lbkmBegin
             // 
             lbkmBegin.AutoSize = true;
-            lbkmBegin.Location = new Point(16, 18);
+            lbkmBegin.ForeColor = SystemColors.ControlDarkDark;
+            lbkmBegin.Location = new Point(13, 9);
             lbkmBegin.Name = "lbkmBegin";
-            lbkmBegin.Size = new Size(25, 15);
+            lbkmBegin.Size = new Size(57, 15);
             lbkmBegin.TabIndex = 15;
-            lbkmBegin.Text = "Km";
+            lbkmBegin.Text = "Km Inicio";
             // 
             // lbKMEnd
             // 
             lbKMEnd.AutoSize = true;
-            lbKMEnd.Location = new Point(86, 17);
+            lbKMEnd.ForeColor = SystemColors.ControlDarkDark;
+            lbKMEnd.Location = new Point(83, 8);
             lbKMEnd.Name = "lbKMEnd";
-            lbKMEnd.Size = new Size(25, 15);
+            lbKMEnd.Size = new Size(51, 15);
             lbKMEnd.TabIndex = 16;
-            lbKMEnd.Text = "Km";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(36, 3);
-            label1.Name = "label1";
-            label1.Size = new Size(55, 15);
-            label1.TabIndex = 17;
-            label1.Text = "Percorrer";
+            lbKMEnd.Text = "Km Fiim";
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(710, 88);
+            progressBar.Location = new Point(721, 88);
             progressBar.Margin = new Padding(3, 2, 3, 2);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(144, 22);
@@ -216,17 +202,17 @@
             // tbStatus
             // 
             tbStatus.Font = new Font("Segoe UI", 7F);
-            tbStatus.Location = new Point(16, 271);
+            tbStatus.Location = new Point(13, 277);
             tbStatus.Margin = new Padding(3, 2, 3, 2);
             tbStatus.Multiline = true;
             tbStatus.Name = "tbStatus";
-            tbStatus.Size = new Size(623, 35);
+            tbStatus.Size = new Size(634, 35);
             tbStatus.TabIndex = 22;
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = Properties.Resources.asses;
-            pictureBox1.Location = new Point(20, 12);
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(3, 8);
             pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(89, 88);
@@ -239,7 +225,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 16F);
             label4.ForeColor = Color.Black;
-            label4.Location = new Point(132, 17);
+            label4.Location = new Point(98, 32);
             label4.Name = "label4";
             label4.Size = new Size(176, 30);
             label4.TabIndex = 24;
@@ -250,7 +236,7 @@
             // 
             label5.AutoSize = true;
             label5.ForeColor = Color.Blue;
-            label5.Location = new Point(140, 53);
+            label5.Location = new Point(100, 68);
             label5.Name = "label5";
             label5.Size = new Size(213, 15);
             label5.TabIndex = 25;
@@ -263,17 +249,17 @@
             panel1.Controls.Add(label5);
             panel1.Controls.Add(progressBar);
             panel1.Controls.Add(label4);
-            panel1.Controls.Add(tbDiretorio);
-            panel1.Location = new Point(-1, -3);
+            panel1.Location = new Point(22, 3);
             panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(865, 112);
+            panel1.Size = new Size(889, 112);
             panel1.TabIndex = 26;
             // 
             // pictureBox2
             // 
+            pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(840, 11);
+            pictureBox2.Location = new Point(845, 7);
             pictureBox2.Margin = new Padding(3, 2, 3, 2);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(20, 19);
@@ -289,7 +275,7 @@
             panel2.Controls.Add(lbUF);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(label3);
-            panel2.Location = new Point(-1, 113);
+            panel2.Location = new Point(22, 119);
             panel2.Margin = new Padding(3, 2, 3, 2);
             panel2.Name = "panel2";
             panel2.Size = new Size(197, 326);
@@ -298,17 +284,14 @@
             // panel3
             // 
             panel3.BackColor = Color.AntiqueWhite;
-            panel3.Controls.Add(label1);
-            panel3.Controls.Add(brnPOrocesss);
             panel3.Controls.Add(tbLog);
             panel3.Controls.Add(tbStatus);
             panel3.Controls.Add(lbLog);
             panel3.Controls.Add(tbKmEnd);
-            panel3.Controls.Add(btFile);
             panel3.Controls.Add(lbKMEnd);
             panel3.Controls.Add(tbKmBegin);
             panel3.Controls.Add(lbkmBegin);
-            panel3.Location = new Point(201, 113);
+            panel3.Location = new Point(224, 119);
             panel3.Margin = new Padding(3, 2, 3, 2);
             panel3.Name = "panel3";
             panel3.Size = new Size(663, 326);
@@ -318,10 +301,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(864, 439);
+            BackColor = SystemColors.InactiveCaption;
+            ClientSize = new Size(911, 513);
             Controls.Add(panel3);
+            Controls.Add(brnPOrocesss);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(btFile);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
@@ -351,11 +337,9 @@
         private Label lbLog;
         private TextBox tbKmEnd;
         private TextBox tbKmBegin;
-        private TextBox tbDiretorio;
         private Button btFile;
         private Label lbkmBegin;
         private Label lbKMEnd;
-        private Label label1;
         private ProgressBar progressBar;
         private TextBox tbStatus;
         private PictureBox pictureBox1;

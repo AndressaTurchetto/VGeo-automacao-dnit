@@ -31,8 +31,7 @@ namespace VGeo
                     GetBR(lbUF.Items[i].ToString());
                     break;  // Encerra o loop ao encontrar "PR"
                 }
-            }
-            tbDiretorio.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            }            
         }
 
         private void brnPOrocesss_Click(object sender, EventArgs e)
