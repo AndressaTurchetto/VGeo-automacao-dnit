@@ -9,6 +9,7 @@ using System.Text;
 using OfficeOpenXml;
 using VGeo.Model;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Reflection;
 
 namespace VGeo
 {
@@ -23,15 +24,16 @@ namespace VGeo
         {
             InitializeComponent();
             PopularComboBoxEstados();
+
             for (int i = 0; i < lbUF.Items.Count; i++)
             {
                 if (lbUF.Items[i].ToString() == "PR")
                 {
                     lbUF.SetSelected(i, true);  // Seleciona o item
-                    GetBR(lbUF.Items[i].ToString());
+                    GetBR(lbUF.Items[i].ToString());                    
                     break;  // Encerra o loop ao encontrar "PR"
                 }
-            }            
+            }
         }
 
         private void brnPOrocesss_Click(object sender, EventArgs e)
@@ -82,21 +84,69 @@ namespace VGeo
 
                     int row = 2;
 
-                    // Percorrer cada BR na ListBox lbBR
-                    foreach (var item in lbBR.Items)
+                    if (lbBR.SelectedItem.ToString() == "TODOS")
                     {
-                        string br = item.ToString(); // Obter o valor do BR
+                        foreach (var item in lbBR.Items)
+                        {
+                            string br = item.ToString(); // Obter o valor do BR
+
+                            // Percorrer os km de 490 a 500
+                            for (int km = Int32.Parse(tbKmBegin.Text); km <= Int32.Parse(tbKmEnd.Text); km++)
+                            {
+                                // Faz a requisição GET para a API
+                                //var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&tipo=B&uf={uf}&cd_tipo=null&data=2024-10-16&km={km}");
+                                var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data=2024-10-18&km={km}");
+
+                                // Verifica se a resposta foi bem-sucedida
+                                if (!response.IsSuccessStatusCode)
+                                {
+                                    Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {br}.");
+                                    break; // Encerra o loop caso não encontre dados para este BR
+                                }
+
+                                // Lê o conteúdo da resposta
+                                var responseContent = await response.Content.ReadAsStringAsync();
+
+                                // Desserializa o JSON para o objeto Feature
+                                var feature = JsonConvert.DeserializeObject<Feature>(responseContent);
+
+                                if (feature == null || feature.Properties == null || feature.Geometry == null)
+                                {
+                                    Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {br}.");
+                                    break; // Encerra o loop se não houver dados válidos
+                                }
+
+                                // Extrair os dados e adicionar uma linha à planilha
+                                var coordenadas = $"{feature.Geometry.Coordinates[0][0]}, {feature.Geometry.Coordinates[0][1]}";
+                                worksheet.Cells[row, 1].Value = feature.Properties.Uf;
+                                worksheet.Cells[row, 2].Value = feature.Properties.Br;
+                                worksheet.Cells[row, 3].Value = feature.Properties.Km;
+                                worksheet.Cells[row, 4].Value = feature.Properties.Data;
+                                worksheet.Cells[row, 5].Value = coordenadas;
+
+                                // Atualizar o log (opcional)
+                                tbLog.Text += $"BR: {feature.Properties.Br}, UF: {feature.Properties.Uf}, KM: {feature.Properties.Km}, Data: {feature.Properties.Data}, Coordenadas: {coordenadas}\n";
+
+                                // Incrementa a linha para a próxima inserção
+                                row++;
+                            }
+                        }
+
+                    }
+
+                    else
+                    {
 
                         // Percorrer os km de 490 a 500
                         for (int km = Int32.Parse(tbKmBegin.Text); km <= Int32.Parse(tbKmEnd.Text); km++)
                         {
                             // Faz a requisição GET para a API
-                            var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&tipo=B&uf={uf}&cd_tipo=null&data=2024-10-16&km={km}");
+                            var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={lbBR.SelectedItem.ToString()}&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data=2024-10-16&km={km}");
 
                             // Verifica se a resposta foi bem-sucedida
                             if (!response.IsSuccessStatusCode)
                             {
-                                Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {br}.");
+                                Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {lbBR.SelectedItem.ToString()}.");
                                 break; // Encerra o loop caso não encontre dados para este BR
                             }
 
@@ -108,7 +158,7 @@ namespace VGeo
 
                             if (feature == null || feature.Properties == null || feature.Geometry == null)
                             {
-                                Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {br}.");
+                                Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {lbBR.SelectedItem.ToString()}.");
                                 break; // Encerra o loop se não houver dados válidos
                             }
 
@@ -123,10 +173,11 @@ namespace VGeo
                             // Atualizar o log (opcional)
                             tbLog.Text += $"BR: {feature.Properties.Br}, UF: {feature.Properties.Uf}, KM: {feature.Properties.Km}, Data: {feature.Properties.Data}, Coordenadas: {coordenadas}\n";
 
-                            // Incrementa a linha para a próxima inserção
-                            row++;
                         }
                     }
+
+
+
                     try
                     {
                         // Salva o arquivo Excel
@@ -196,7 +247,7 @@ namespace VGeo
 
                 // Popula o ListBox com a lista de BRs
                 var listaBr = brModel.lista_br.Split(','); // Divide a string de BRs separadas por vírgula
-
+                lbBR.Items.Add("TODOS");
                 foreach (var br in listaBr)
                 {
                     lbBR.Items.Add(br.Trim()); // Adiciona cada BR à lista, removendo espaços em branco
@@ -215,6 +266,83 @@ namespace VGeo
                 // Tratar quaisquer outros erros
                 Console.WriteLine("Erro inesperado: " + ex.Message);
             }
+
+
+            for (int i = 0; i < lbBR.Items.Count; i++)
+            {
+                if (lbBR.Items[i].ToString() == "TODOS")
+                {
+                    lbBR.SetSelected(i, true);  // Seleciona o item
+                    GetBR(lbBR.Items[i].ToString());
+                    break;  // Encerra o loop ao encontrar "PR"
+                }
+            }
+        }
+
+        private async void GetTipo(string uf, string br)
+        {
+            try
+            {
+                // Verifica se o parâmetro `uf` foi fornecido
+                if (string.IsNullOrEmpty(br))
+                {
+                    Console.WriteLine("UF não fornecida.");
+                    return;
+                }
+
+                // Faz a requisição GET para a API
+                var response = await client.GetAsync($"\r\nhttps://servicos.dnit.gov.br/sgplan/apigeo/snv/listartipoporbruf?data=2024-10-18T17:55:49.756Z&uf={uf}&br={br}");
+
+                // Verifica se a resposta foi bem-sucedida
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Erro: a resposta da API retornou o status {response.StatusCode}");
+                    return;
+                }
+
+                // Lê o conteúdo da resposta
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                // Desserializa o JSON para o objeto BrModel
+                var brModel = JsonConvert.DeserializeObject<Trecho>(responseContent);
+
+                // Verifica se a desserialização retornou um objeto válido
+                if (brModel == null || string.IsNullOrEmpty(brModel.lista_tp_trecho))
+                {
+                    Console.WriteLine("Erro: Não foi possível desserializar o JSON ou lista de BRs vazia.");
+                    return;
+                }
+
+                cbTipo.Items.Clear();
+
+                var tiposArray = brModel.lista_tp_trecho.Split(',');
+
+                // Popula o ComboBox com os tipos de trechos retornados
+                foreach (var tipo in tiposArray)
+                {
+                    cbTipo.Items.Add(tipo); // Adiciona o tipo ao ComboBox
+                }
+
+                // Opcionalmente, selecione o primeiro item do ComboBox
+                if (cbTipo.Items.Count > 0)
+                {
+                    cbTipo.SelectedIndex = 0;
+                }
+
+
+
+
+            }
+            catch (HttpRequestException e)
+            {
+                // Tratar o erro de requisição HTTP
+                Console.WriteLine("Erro ao fazer a requisição: " + e.Message);
+            }
+            catch (Exception ex)
+            {
+                // Tratar quaisquer outros erros
+                Console.WriteLine("Erro inesperado: " + ex.Message);
+            }       
         }
 
         private void PopularComboBoxEstados()
@@ -222,7 +350,7 @@ namespace VGeo
             // Lista de siglas dos estados brasileiros
             List<string> estados = new List<string>
         {
-            "TODOS", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
+             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
             "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
             "RS", "RO", "RR", "SC", "SP", "SE", "TO"
         };
@@ -239,6 +367,9 @@ namespace VGeo
 
         private void lbUF_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(lbUF.SelectedIndex == 0) {
+            }
+            else
             GetBR(lbUF.SelectedItem.ToString());
         }
 
@@ -277,6 +408,16 @@ namespace VGeo
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void lbBR_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetTipo(lbUF.SelectedItem.ToString(), lbBR.SelectedItem.ToString());
+        }
+
+        private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

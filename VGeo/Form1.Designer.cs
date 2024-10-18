@@ -49,8 +49,10 @@
             label5 = new Label();
             panel1 = new Panel();
             pictureBox2 = new PictureBox();
+            cbTipo = new ComboBox();
             panel2 = new Panel();
             panel3 = new Panel();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -65,9 +67,9 @@
             lbBR.Location = new Point(105, 24);
             lbBR.Margin = new Padding(3, 2, 3, 2);
             lbBR.Name = "lbBR";
-            lbBR.SelectionMode = SelectionMode.None;
             lbBR.Size = new Size(82, 289);
             lbBR.TabIndex = 12;
+            lbBR.SelectedIndexChanged += lbBR_SelectedIndexChanged;
             // 
             // lbUF
             // 
@@ -140,7 +142,7 @@
             // 
             // tbKmEnd
             // 
-            tbKmEnd.Location = new Point(84, 27);
+            tbKmEnd.Location = new Point(205, 25);
             tbKmEnd.Margin = new Padding(3, 2, 3, 2);
             tbKmEnd.Name = "tbKmEnd";
             tbKmEnd.Size = new Size(54, 23);
@@ -149,7 +151,7 @@
             // 
             // tbKmBegin
             // 
-            tbKmBegin.Location = new Point(13, 28);
+            tbKmBegin.Location = new Point(134, 26);
             tbKmBegin.Margin = new Padding(3, 2, 3, 2);
             tbKmBegin.Name = "tbKmBegin";
             tbKmBegin.Size = new Size(61, 23);
@@ -175,7 +177,7 @@
             // 
             lbkmBegin.AutoSize = true;
             lbkmBegin.ForeColor = SystemColors.ControlDarkDark;
-            lbkmBegin.Location = new Point(13, 9);
+            lbkmBegin.Location = new Point(134, 7);
             lbkmBegin.Name = "lbkmBegin";
             lbkmBegin.Size = new Size(57, 15);
             lbkmBegin.TabIndex = 15;
@@ -185,7 +187,7 @@
             // 
             lbKMEnd.AutoSize = true;
             lbKMEnd.ForeColor = SystemColors.ControlDarkDark;
-            lbKMEnd.Location = new Point(83, 8);
+            lbKMEnd.Location = new Point(204, 6);
             lbKMEnd.Name = "lbKMEnd";
             lbKMEnd.Size = new Size(51, 15);
             lbKMEnd.TabIndex = 16;
@@ -268,6 +270,15 @@
             pictureBox2.TabStop = false;
             pictureBox2.Click += pictureBox2_Click;
             // 
+            // cbTipo
+            // 
+            cbTipo.FormattingEnabled = true;
+            cbTipo.Location = new Point(13, 24);
+            cbTipo.Name = "cbTipo";
+            cbTipo.Size = new Size(98, 23);
+            cbTipo.TabIndex = 27;
+            cbTipo.SelectedIndexChanged += cbTipo_SelectedIndexChanged;
+            // 
             // panel2
             // 
             panel2.BackColor = SystemColors.GradientInactiveCaption;
@@ -284,6 +295,8 @@
             // panel3
             // 
             panel3.BackColor = Color.AntiqueWhite;
+            panel3.Controls.Add(label1);
+            panel3.Controls.Add(cbTipo);
             panel3.Controls.Add(tbLog);
             panel3.Controls.Add(tbStatus);
             panel3.Controls.Add(lbLog);
@@ -296,6 +309,16 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(663, 326);
             panel3.TabIndex = 26;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.ForeColor = SystemColors.ControlDarkDark;
+            label1.Location = new Point(15, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(84, 15);
+            label1.TabIndex = 28;
+            label1.Text = "Tipo de Trecho";
             // 
             // Form1
             // 
@@ -349,5 +372,7 @@
         private Panel panel2;
         private Panel panel3;
         private PictureBox pictureBox2;
+        private ComboBox cbTipo;
+        private Label label1;
     }
 }
