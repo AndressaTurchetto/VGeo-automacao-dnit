@@ -38,18 +38,24 @@ namespace VGeo
 
         private void brnPOrocesss_Click(object sender, EventArgs e)
         {
-            tbLog.Text = "";
-            // PercorrerUF();
-            // Verifica se existe algum item marcado no CheckedListBox
-            if (lbUF.SelectedItem.ToString().Length == 0) // Nenhum item marcado
+            if(cbTipo.SelectedItem == null)
             {
-                MessageBox.Show("Selecione pelo menos um estado.");
+                MessageBox.Show("Selecione o trecho.");
             }
-            else
-            {
+            else { 
+                tbLog.Text = "";
+                // PercorrerUF();
+                // Verifica se existe algum item marcado no CheckedListBox
+                if (lbUF.SelectedItem.ToString().Length == 0) // Nenhum item marcado
+                {
+                    MessageBox.Show("Selecione pelo menos um estado.");
+                }
+                else
+                {
 
-                ExecuteAsync(lbUF.SelectedItem.ToString()); // Passa o valor para ExecuteAsync
-                btFile.Visible = true;
+                    ExecuteAsync(lbUF.SelectedItem.ToString()); // Passa o valor para ExecuteAsync
+                    btFile.Visible = true;
+                }
             }
 
 
@@ -59,6 +65,7 @@ namespace VGeo
         {
             try
             {
+                var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
                 // Exibir a barra de progresso
                 progressBar.Visible = true;
                 progressBar.Style = ProgressBarStyle.Marquee; // Estilo contínuo
@@ -67,7 +74,7 @@ namespace VGeo
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 // Caminho onde o arquivo Excel será salvo
                 //filePath = tbDiretorio.Text + "DadosRotas.xlsx";
-                filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"DadosRotas{lbUF.SelectedItem.ToString()}.xlsx");
+                filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"DadosRotas_{lbUF.SelectedItem.ToString()}_{lbBR.SelectedItem.ToString()}_{cbTipo.SelectedItem.ToString()}.xlsx");
 
                 // Cria uma nova planilha Excel
                 using (var package = new ExcelPackage())
@@ -95,7 +102,7 @@ namespace VGeo
                             {
                                 // Faz a requisição GET para a API
                                 //var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&tipo=B&uf={uf}&cd_tipo=null&data=2024-10-16&km={km}");
-                                var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data=2024-10-18&km={km}");
+                                var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={br}&&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data={currentDate}&km={km}");
 
                                 // Verifica se a resposta foi bem-sucedida
                                 if (!response.IsSuccessStatusCode)
@@ -141,7 +148,7 @@ namespace VGeo
                         for (int km = Int32.Parse(tbKmBegin.Text); km <= Int32.Parse(tbKmEnd.Text); km++)
                         {
                             // Faz a requisição GET para a API
-                            var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={lbBR.SelectedItem.ToString()}&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data=2024-10-16&km={km}");
+                            var response = await client.GetAsync($"https://servicos.dnit.gov.br/sgplan/apigeo/rotas/espacializarponto?br={lbBR.SelectedItem.ToString()}&tipo={cbTipo.SelectedItem}&uf={uf}&cd_tipo=null&data={currentDate}&km={km}");
 
                             // Verifica se a resposta foi bem-sucedida
                             if (!response.IsSuccessStatusCode)
@@ -412,7 +419,21 @@ namespace VGeo
 
         private void lbBR_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetTipo(lbUF.SelectedItem.ToString(), lbBR.SelectedItem.ToString());
+            cbTipo.Items.Clear();
+
+            if (lbBR.SelectedItem == "TODOS")
+            {
+                cbTipo.Items.Clear();                
+                cbTipo.Items.Add("A");
+                cbTipo.Items.Add("B");
+                cbTipo.Items.Add("C");
+                cbTipo.Items.Add("U");
+                cbTipo.Items.Add("V");
+            }
+            else
+            {
+                GetTipo(lbUF.SelectedItem.ToString(), lbBR.SelectedItem.ToString());
+            }
         }
 
         private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
