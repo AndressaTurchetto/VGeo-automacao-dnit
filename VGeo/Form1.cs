@@ -107,6 +107,7 @@ namespace VGeo
                                 // Verifica se a resposta foi bem-sucedida
                                 if (!response.IsSuccessStatusCode)
                                 {
+                                    MessageBox.Show("A plataforma VGEO esta está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {br}.");
                                     break; // Encerra o loop caso não encontre dados para este BR
                                 }
@@ -153,6 +154,7 @@ namespace VGeo
                             // Verifica se a resposta foi bem-sucedida
                             if (!response.IsSuccessStatusCode)
                             {
+                                MessageBox.Show("A plataforma VGEO esta está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 Console.WriteLine($"Nenhum dado encontrado para o km {km}. Encerrando a execução para BR {lbBR.SelectedItem.ToString()}.");
                                 break; // Encerra o loop caso não encontre dados para este BR
                             }
@@ -232,6 +234,7 @@ namespace VGeo
                 // Verifica se a resposta foi bem-sucedida
                 if (!response.IsSuccessStatusCode)
                 {
+                    MessageBox.Show("A plataforma VGEO esta está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Console.WriteLine($"Erro: a resposta da API retornou o status {response.StatusCode}");
                     return;
                 }
@@ -303,6 +306,7 @@ namespace VGeo
                 // Verifica se a resposta foi bem-sucedida
                 if (!response.IsSuccessStatusCode)
                 {
+                    MessageBox.Show("A plataforma VGEO esta está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Console.WriteLine($"Erro: a resposta da API retornou o status {response.StatusCode}");
                     return;
                 }
