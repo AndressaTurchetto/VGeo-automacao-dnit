@@ -74,7 +74,7 @@ namespace VGeo
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 // Caminho onde o arquivo Excel será salvo
                 //filePath = tbDiretorio.Text + "DadosRotas.xlsx";
-                filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"DadosRotas_{lbUF.SelectedItem.ToString()}_{lbBR.SelectedItem.ToString()}_{cbTipo.SelectedItem.ToString()}.xlsx");
+                filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"DadosRotas_{lbUF.SelectedItem.ToString()}_{lbBR.SelectedItem.ToString()}_{cbTipo.SelectedItem.ToString()}_{tbKmBegin.Text}_{tbKmEnd.Text}.xlsx");
 
                 // Cria uma nova planilha Excel
                 using (var package = new ExcelPackage())
@@ -124,12 +124,17 @@ namespace VGeo
                                 }
 
                                 // Extrair os dados e adicionar uma linha à planilha
+                                var latitude = feature.Geometry.Coordinates[0][1];
+                                var longitude = feature.Geometry.Coordinates[0][0];
+
+                                // Extrair os dados e adicionar uma linha à planilha
                                 var coordenadas = $"{feature.Geometry.Coordinates[0][0]}, {feature.Geometry.Coordinates[0][1]}";
                                 worksheet.Cells[row, 1].Value = feature.Properties.Uf;
                                 worksheet.Cells[row, 2].Value = feature.Properties.Br;
                                 worksheet.Cells[row, 3].Value = feature.Properties.Km;
                                 worksheet.Cells[row, 4].Value = feature.Properties.Data;
-                                worksheet.Cells[row, 5].Value = coordenadas;
+                                worksheet.Cells[row, 5].Value = latitude;  // Coluna de Latitude
+                                worksheet.Cells[row, 6].Value = longitude; // Coluna de Longitude
 
                                 // Atualizar o log (opcional)
                                 tbLog.Text += $"BR: {feature.Properties.Br}, UF: {feature.Properties.Uf}, KM: {feature.Properties.Km}, Data: {feature.Properties.Data}, Coordenadas: {coordenadas}\n";
@@ -143,7 +148,6 @@ namespace VGeo
 
                     else
                     {
-
                         // Percorrer os km de 490 a 500
                         for (int km = Int32.Parse(tbKmBegin.Text); km <= Int32.Parse(tbKmEnd.Text); km++)
                         {
@@ -170,20 +174,23 @@ namespace VGeo
                             }
 
                             // Extrair os dados e adicionar uma linha à planilha
-                            var coordenadas = $"{feature.Geometry.Coordinates[0][0]}, {feature.Geometry.Coordinates[0][1]}";
+                            var latitude = feature.Geometry.Coordinates[0][1];
+                            var longitude = feature.Geometry.Coordinates[0][0];
+
                             worksheet.Cells[row, 1].Value = feature.Properties.Uf;
                             worksheet.Cells[row, 2].Value = feature.Properties.Br;
                             worksheet.Cells[row, 3].Value = feature.Properties.Km;
                             worksheet.Cells[row, 4].Value = feature.Properties.Data;
-                            worksheet.Cells[row, 5].Value = coordenadas;
+                            worksheet.Cells[row, 5].Value = latitude;  // Coluna de Latitude
+                            worksheet.Cells[row, 6].Value = longitude; // Coluna de Longitude
 
                             // Atualizar o log (opcional)
-                            tbLog.Text += $"BR: {feature.Properties.Br}, UF: {feature.Properties.Uf}, KM: {feature.Properties.Km}, Data: {feature.Properties.Data}, Coordenadas: {coordenadas}\n";
+                            tbLog.Text += $"BR: {feature.Properties.Br}, UF: {feature.Properties.Uf}, KM: {feature.Properties.Km}, Data: {feature.Properties.Data}, Latitude: {latitude}, Longitude: {longitude}\n";
 
+                            // Incrementar a linha para a próxima inserção
+                            row++;
                         }
                     }
-
-
 
                     try
                     {
@@ -232,7 +239,7 @@ namespace VGeo
                 // Verifica se a resposta foi bem-sucedida
                 if (!response.IsSuccessStatusCode)
                 {
-                    //MessageBox.Show("A plataforma VGEO esta está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show("A plataforma VGEO está temporariamente indisponível. Por favor, tente novamente mais tarde.", "Serviço Indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     Console.WriteLine($"Erro: a resposta da API retornou o status {response.StatusCode}");
                     return;
